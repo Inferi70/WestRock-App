@@ -1,0 +1,59 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Android/Gradle
+/.gradle/
+/.idea/
+/local.properties
+/.DS_Store
+/build/
+/captures/
+/*.iml
+
+# Kotlin/Jetpack Compose
+/app/build/
+/app/.cxx/
+
+# Gradle Wrapper
+.gradle/
+/gradle-app.setting
+
+# OS
+*.log
+*.keystore
+*.apk
+*.ap_
+*.jks
+
+# VS Code (if you're using it too)
+.vscode/
+
+# Crash reports
+crashlytics-build.log
+
+# Android Studio
+.idea/
+*.iml
+*.hprof
+*.orig
+*.rej
+
+# Generated files
+build/
+bin/
+gen/
+out/
+
