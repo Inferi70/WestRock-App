@@ -24,16 +24,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.tb.rotarydiecutter.R
 import com.tb.rotarydiecutter.models.RotaryView
 import java.io.InputStream
 
 @Composable
-fun AddScreen(viewModel: RotaryView) {
+fun AddScreen(
+    viewModel: RotaryView,
+    navController: NavController,
+    prefillDieCut: String = ""
+) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
-    var f1 by remember { mutableStateOf("") } // DieCut
+    var f1 by remember { mutableStateOf(prefillDieCut) } // DieCut
     var f2 by remember { mutableStateOf("") } // BeltSpeed
     var f3 by remember { mutableStateOf("") } // TimeDelay
     var f4 by remember { mutableStateOf("") } // BPH
@@ -321,7 +326,18 @@ fun AddScreen(viewModel: RotaryView) {
                 pullRoll = ""; feedGate = ""; wheelState = "Unknown"; bundleBreaker =
                 "Unknown"; scissorLift = "Unknown"; specialty = "Unknown"
                 Toast.makeText(context, "Item added successfully", Toast.LENGTH_SHORT).show()
-            },
+
+                focusManager.clearFocus()
+
+                // ✅ Go back to the Search screen
+                if (!navController.popBackStack("search", inclusive = false)) {
+                    // Fallback if "search" isn’t on the back stack for some reason
+                    navController.navigate("search") {
+                        popUpTo(0)
+                        launchSingleTop = true
+                    }
+                }
+             },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF207318).copy(alpha = 0.90f),

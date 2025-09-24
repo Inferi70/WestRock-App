@@ -14,16 +14,46 @@ import com.tb.rotarydiecutter.ui.screens.SearchScreen
 
 @Composable
 fun AppNav(navController: NavHostController, viewModel: RotaryView) {
-    NavHost(navController, startDestination = "search") {
-        composable("search") { SearchScreen(viewModel, navController) }
-        composable("list") { DbScreen(viewModel, navController) }
-        composable("add") { AddScreen(viewModel) }
+    NavHost(navController = navController, startDestination = "search") {
+
+        composable("search") {
+            SearchScreen(viewModel = viewModel, navController = navController)
+        }
+
+        composable("list") {
+            DbScreen(viewModel = viewModel, navController = navController)
+        }
+
+        // Generic Add screen (no prefill)
+        composable("add") {
+            AddScreen(viewModel = viewModel, navController = navController)
+        }
+
+        // Detail screen
         composable(
-            "rotary_detail/{id}",
+            route = "rotary_detail/{id}",
             arguments = listOf(navArgument("id") { type = NavType.IntType })
-        ) {
-            val id = it.arguments?.getInt("id") ?: -1
-            DetailScreen(id, viewModel, navController)
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getInt("id") ?: -1
+            DetailScreen(id = id, viewModel = viewModel, navController = navController)
+        }
+
+        // Add screen with optional DieCut prefill from query
+        composable(
+            route = "rotary_add?dieCut={dieCut}",
+            arguments = listOf(
+                navArgument("dieCut") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                }
+            )
+        ) { backStackEntry ->
+            val dieCutPrefill = backStackEntry.arguments?.getString("dieCut").orEmpty()
+            AddScreen(
+                viewModel = viewModel,
+                navController = navController,
+                prefillDieCut = dieCutPrefill
+            )
         }
     }
 }

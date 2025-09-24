@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.tb.rotarydiecutter.database.RotaryDatabase
 
@@ -29,10 +30,33 @@ class RotaryView(context: Context) : ViewModel() {
     private val dbHelper = RotaryDatabase(context)
 
     val dummyItems = mutableStateListOf<DummyItem>()
+    val scratchNotes = mutableStateOf("[]")
 
     init {
         refresh()
+        refreshScratchNotes()
     }
+
+    // ---------- Scratch Notes API ----------
+    fun refreshScratchNotes() {
+        try {
+            scratchNotes.value = dbHelper.getScratchNotes()
+        } catch (e: Exception) {
+            Log.e("RotaryView", "Failed to load scratch notes", e)
+            // fall back to empty
+            scratchNotes.value = "[]"
+        }
+    }
+
+    fun saveScratchNotes(json: String) {
+        try {
+            dbHelper.saveScratchNotes(json)
+            scratchNotes.value = json
+        } catch (e: Exception) {
+            Log.e("RotaryView", "Failed to save scratch notes", e)
+        }
+    }
+    // --------------------------------------
 
     fun refresh() {
         dummyItems.clear()

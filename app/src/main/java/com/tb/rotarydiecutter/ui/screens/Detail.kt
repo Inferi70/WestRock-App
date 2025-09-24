@@ -89,6 +89,22 @@ fun DetailScreen(id: Int, viewModel: RotaryView, navController: NavController) {
                 whiteFontColor = Color(0xE8F3E913)
             ) { f1 = it }
             DetailField("Box Per Hour", f4, isEditing, imeAction = ImeAction.Done) { f4 = it }
+
+            if (isEditing) {
+                Divider(modifier = Modifier.padding(vertical = 6.dp), color = Color(0xFFC5C5C5).copy(alpha = 0.85f), thickness = 3.dp)
+                VerticalRadioField("Scissor Lift", scissorLift, listOf("Yes", "Unknown")) {
+                    scissorLift = it
+                }
+                Divider(modifier = Modifier.padding(vertical = 6.dp), color = Color(0xFFC5C5C5).copy(alpha = 0.85f), thickness = 3.dp)
+                VerticalRadioField("Skip Feed", specialty, listOf("Yes", "No", "Unknown")) {
+                    specialty = it
+                }
+                Divider(modifier = Modifier.padding(vertical = 6.dp), color = Color(0xFFC5C5C5).copy(alpha = 0.85f), thickness = 3.dp)
+            } else {
+                DisplayLabelValue("Scissor Lift", scissorLift)
+                DisplayLabelValue("Skip Feed", specialty)
+            }
+
             DetailField("Belt Speed", f2, isEditing, imeAction = ImeAction.Done) { f2 = it }
             DetailField("Time Delay", f3, isEditing, imeAction = ImeAction.Done) { f3 = it }
             DetailField("Notes", f6, isEditing) { f6 = it }
@@ -100,28 +116,10 @@ fun DetailScreen(id: Int, viewModel: RotaryView, navController: NavController) {
             }
 
             if (isEditing) {
-                Divider(modifier = Modifier.padding(vertical = 6.dp), color = Color(0xFFC5C5C5).copy(alpha = 0.85f), thickness = 3.dp)
                 VerticalRadioField("Wheels", wheels, listOf("Up", "Down", "Unknown")) { wheels = it }
-                Divider(modifier = Modifier.padding(vertical = 6.dp), color = Color(0xFFC5C5C5).copy(alpha = 0.85f), thickness = 3.dp)
-                VerticalRadioField(
-                    "Running Out",
-                    bundleBreaker,
-                    listOf("Bundle Breaker", "Straight Out", "Unknown")
-                ) { bundleBreaker = it }
-                Divider(modifier = Modifier.padding(vertical = 6.dp), color = Color(0xFFC5C5C5).copy(alpha = 0.85f), thickness = 3.dp)
-                VerticalRadioField("Scissor Lift", scissorLift, listOf("Yes", "Unknown")) {
-                    scissorLift = it
-                }
-                Divider(modifier = Modifier.padding(vertical = 6.dp), color = Color(0xFFC5C5C5).copy(alpha = 0.85f), thickness = 3.dp)
-                VerticalRadioField("Skip Feed", specialty, listOf("Yes", "No", "Unknown")) {
-                    specialty = it
-                }
                 Divider(modifier = Modifier.padding(vertical = 6.dp), color = Color(0xFFC5C5C5).copy(alpha = 0.85f), thickness = 3.dp)
             } else {
                 DisplayLabelValue("Wheels", wheels)
-                DisplayLabelValue("Running Out", bundleBreaker)
-                DisplayLabelValue("Scissor Lift", scissorLift)
-                DisplayLabelValue("Skip Feed", specialty)
             }
 
             DetailField("Additional Notes", f5, isEditing) { f5 = it }
@@ -252,9 +250,16 @@ private fun DetailField(
         )
 
     } else {
-        Column(modifier = Modifier.padding(bottom = 8.dp)) {
-            Text(label + ":", color = Color.Red, fontSize = labelFontSize.sp, fontWeight = labelFontWeight)
-            Text(value, color = whiteFontColor, fontSize = whiteFontSize.sp, lineHeight = 36.sp)
+        if (value.isNotBlank()) { // 👈 only show if not blank
+            Column(modifier = Modifier.padding(bottom = 8.dp)) {
+                Text(
+                    label + ":",
+                    color = Color.Red,
+                    fontSize = labelFontSize.sp,
+                    fontWeight = labelFontWeight
+                )
+                Text(value, color = whiteFontColor, fontSize = whiteFontSize.sp, lineHeight = 36.sp)
+            }
         }
     }
 }
@@ -308,8 +313,37 @@ private fun VerticalRadioField(label: String, selected: String, options: List<St
 
 @Composable
 private fun DisplayLabelValue(label: String, value: String?) {
+    if (value.isNullOrBlank()) return // 👈 don't show if empty/null
+
+    // Special cases
+    val lower = value.lowercase()
+    if (label in listOf("Running Out", "Scissor Lift", "Skip Feed")) {
+        if (lower == "yes" || lower == "up" || lower == "down") {
+            // Just show the label (without ": Yes")
+            Column(modifier = Modifier.padding(bottom = 8.dp)) {
+                Text(label + " Used", color = Color.Red, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+            }
+        }
+        // If "no", "unknown", or anything else → don't show at all
+        return
+    }
+
+    if (label in listOf("Wheels")) {
+        if (lower == "up" || lower == "down") {
+            // Just show the label (without ": Yes")
+            Column(modifier = Modifier.padding(bottom = 8.dp)) {
+                Text(label, color = Color.Red, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+                Text(value, color = Color.White, fontSize = 36.sp)
+            }
+        }
+        // If "no", "unknown", or anything else → don't show at all
+        return
+    }
+
+    // Default case: show normally
     Column(modifier = Modifier.padding(bottom = 8.dp)) {
         Text(label + ":", color = Color.Red, fontSize = 28.sp)
-        Text(value ?: "", color = Color.White, fontSize = 36.sp)
+        Text(value, color = Color.White, fontSize = 36.sp)
     }
 }
+
