@@ -321,7 +321,7 @@ private fun DisplayLabelValue(label: String, value: String?) {
         if (lower == "yes" || lower == "up" || lower == "down") {
             // Just show the label (without ": Yes")
             Column(modifier = Modifier.padding(bottom = 8.dp)) {
-                Text(label + " Used", color = Color.Red, fontSize = 28.sp, fontWeight = FontWeight.Bold)
+                Text(label + " Used", color = Color(0xE8F3E913), fontSize = 28.sp, fontWeight = FontWeight.Bold)
             }
         }
         // If "no", "unknown", or anything else → don't show at all

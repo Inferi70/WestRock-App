@@ -146,7 +146,7 @@ fun SearchScreen(viewModel: RotaryView, navController: NavController) {
                         .padding(horizontal = parsed.layout.marginH.dp)   // from JSON layout
                         .clickable { onPreviewTapped() },
                     colors = CardDefaults.cardColors(
-                        containerColor = Color.Black,
+                        containerColor = Color.Black.copy(alpha = 0.75f),
                         contentColor = Color.White
                     )
                 ) {
@@ -173,7 +173,7 @@ fun SearchScreen(viewModel: RotaryView, navController: NavController) {
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = Color(0xFF1E1E1E),
+                            containerColor = Color.Black.copy(alpha = 0.75f),
                             contentColor = Color.White
                         )
                     ) {

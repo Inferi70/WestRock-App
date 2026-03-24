@@ -12,6 +12,11 @@ import com.tb.rotarydiecutter.ui.screens.DbScreen
 import com.tb.rotarydiecutter.ui.screens.DetailScreen
 import com.tb.rotarydiecutter.ui.screens.SearchScreen
 
+import com.tb.rotarydiecutter.ui.bowling.BowlingAddScreen
+import com.tb.rotarydiecutter.ui.bowling.BowlingHistoryScreen
+import com.tb.rotarydiecutter.ui.bowling.BowlingHomeScreen
+
+
 @Composable
 fun AppNav(navController: NavHostController, viewModel: RotaryView) {
     NavHost(navController = navController, startDestination = "search") {
@@ -55,5 +60,11 @@ fun AppNav(navController: NavHostController, viewModel: RotaryView) {
                 prefillDieCut = dieCutPrefill
             )
         }
+
+        // Bowling
+        composable("bowl/home")    { BowlingHomeScreen(navController) }
+        composable("bowl/add")     { BowlingAddScreen(navController) }
+        composable("bowl/history") { BowlingHistoryScreen(navController) }
+
     }
 }
