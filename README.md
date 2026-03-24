@@ -2,26 +2,6 @@
 
 An Android application developed in Kotlin using Jetpack Compose for UI and SQLite for data persistence. This app allows users to interact with rotary die cutter data through features like add, search, edit, and view details.
 
-## 📂 Project Structure
-
-```
-WestRock-App-main/
-├── app/
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/com/tb/rotarydiecutter/
-│   │   │   │   ├── MainActivity.kt
-│   │   │   │   ├── database/sql_database.kt
-│   │   │   │   ├── models/RotaryView.kt
-│   │   │   │   ├── ui/navigation/
-│   │   │   │   ├── ui/screens/
-│   │   │   │   └── ui/theme/
-│   │   │   └── res/drawable/
-│   │   └── AndroidManifest.xml
-├── build.gradle.kts
-├── gradle.properties
-├── settings.gradle.kts
-└── gradlew / gradlew.bat
 ```
 
 ## ⚙️ Features
@@ -62,18 +42,25 @@ WestRock-App-main/
 - **Architecture**: MVVM-lite (using state models like `RotaryView`)
 
 ## 📷 Screenshots
-> ToDo will add soon
-> *(Include screenshots of the UI here if possible: Add Screen, Search Page, Detail View, Bottom Navigation)*
+### Search (Home) Page
+<p align="center">
+  <img src="screens/Search.gif" width="300">
+</p>
 
-## 📁 .gitignore
+### Dies Page
+<p align="center">
+  <img src="screens/Dies.gif" width="300">
+</p>
 
-Configured to exclude:
+### Add/Load Page
+<p align="center">
+  <img src="screens/Add.gif" width="300">
+</p>
 
-- `build/` directories
-- `.gradle/`
-- `.idea/`
-- `*.iml`
-- `local.properties`
+### Bowling Page
+<p align="center">
+  <img src="screens/Bowling.png" width="300">
+</p>
 
 ## 📄 License
 
